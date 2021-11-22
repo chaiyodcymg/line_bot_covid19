@@ -3,8 +3,8 @@ var express = require('express')
 var bodyParser = require('body-parser')
 var request = require('request-promise')
 var app = express()
-
-app.set('port', (process.env.PORT || 3001))
+let PORT = process.env.PORT || 3001;
+// app.set('port', (process.env.PORT || 3001))
 
 app.use('/', express.static(__dirname))
 app.use(bodyParser.json())
@@ -24,7 +24,7 @@ app.post('/webhook', async (req, res) => {
   for (const event of events) {
     if (event.type === "message") {
       msg = event.message.text
-      
+
       console.log(event);
 
       if (msg == "ผู้ติดเชื้อรายวัน") {
@@ -61,9 +61,9 @@ app.post('/webhook', async (req, res) => {
       } else {
         let messages1 = [
           {
-            "type": "text", 
+            "type": "text",
             "text": "โปรดเรียกใช้คำสั่งฉัน! เช่น :\n- ผู้ติดเชื้อรายวัน\n- ผู้ติดเชื้อรายวันแยกจังหวัด\n- ระลอก 3 แยกจังหวัด\n- กราฟผู้ติดเชื้อ 1 สัปดาห์\n\nหมายเหตุ**\n1. ผู้ติดเชื้อรายวันแยกจังหวัด คือ รายงานสถานการณ์ COVID-19 ประจำวัน แยกตามรายจังหวัด (ค้นหาตามชื่อจังหวัด)\n2. ระลอก 3 แยกจังหวัด คือ รายงานสถานการณ์ COVID-19 ระลอก 3 (ตั้งแต่ 01/04/2021 –ปัจจุบัน) แยกตามรายจังหวัด (ค้นหาตามชื่อจังหวัด)\n3. กราฟผู้ติดเชื้อ 1 สัปดาห์ คือ กราฟแสดง 1 สัปดาห์ล่าสุด",
-            
+
           }
 
         ];
@@ -79,9 +79,9 @@ app.post('/webhook', async (req, res) => {
       console.log(event);
       let messages1 = [
         {
-          "type": "text", 
+          "type": "text",
           "text": "โปรดเรียกใช้คำสั่งฉัน! เช่น :\n- ผู้ติดเชื้อรายวัน\n- ผู้ติดเชื้อรายวันแยกจังหวัด\n- ระลอก 3 แยกจังหวัด\n- กราฟผู้ติดเชื้อ 1 สัปดาห์\n\nหมายเหตุ**\n1. ผู้ติดเชื้อรายวันแยกจังหวัด คือ รายงานสถานการณ์ COVID-19 ประจำวัน แยกตามรายจังหวัด (ค้นหาตามชื่อจังหวัด)\n2. ระลอก 3 แยกจังหวัด คือ รายงานสถานการณ์ COVID-19 ระลอก 3 (ตั้งแต่ 01/04/2021 –ปัจจุบัน) แยกตามรายจังหวัด (ค้นหาตามชื่อจังหวัด)\n3. กราฟผู้ติดเชื้อ 1 สัปดาห์ คือ กราฟแสดง 1 สัปดาห์ล่าสุด",
-          
+
         }
 
       ];
@@ -107,11 +107,11 @@ async function covid_day() {
   let data_text = await res.text()
 
   let dataCovid = JSON.parse(data_text);
- let txn_date = dataCovid[0].txn_date;
- let new_case = comma2(String(dataCovid[0].new_case));
+  let txn_date = dataCovid[0].txn_date;
+  let new_case = comma2(String(dataCovid[0].new_case));
   let total_case = comma2(String(dataCovid[0].total_case));
   let new_death = comma2(String(dataCovid[0].new_death));
-  let  total_death = comma2(String(dataCovid[0].total_death));
+  let total_death = comma2(String(dataCovid[0].total_death));
   let new_recovered = comma2(String(dataCovid[0].new_recovered));
   let total_recovered = comma2(String(dataCovid[0].total_recovered));
   let update_date = "อัปเดตข้อมูลล่าสุด : " + dataCovid[0].update_date;
@@ -319,9 +319,9 @@ async function covid_day() {
 
     },
     {
-      "type": "text", 
+      "type": "text",
       "text": "โปรดเรียกใช้คำสั่งฉัน! เช่น :\n- ผู้ติดเชื้อรายวัน\n- ผู้ติดเชื้อรายวันแยกจังหวัด\n- ระลอก 3 แยกจังหวัด\n- กราฟผู้ติดเชื้อ 1 สัปดาห์\n\nหมายเหตุ**\n1. ผู้ติดเชื้อรายวันแยกจังหวัด คือ รายงานสถานการณ์ COVID-19 ประจำวัน แยกตามรายจังหวัด (ค้นหาตามชื่อจังหวัด)\n2. ระลอก 3 แยกจังหวัด คือ รายงานสถานการณ์ COVID-19 ระลอก 3 (ตั้งแต่ 01/04/2021 –ปัจจุบัน) แยกตามรายจังหวัด (ค้นหาตามชื่อจังหวัด)\n3. กราฟผู้ติดเชื้อ 1 สัปดาห์ คือ กราฟแสดง 1 สัปดาห์ล่าสุด"
-    
+
     }
 
   ];
@@ -356,7 +356,7 @@ async function covid3_provice() {
 
     }
 
-    province_obj[CovidProvince3[i].province].sum_total_patient = comma3( String( province_obj[CovidProvince3[i].province].sum_total_patient))
+    province_obj[CovidProvince3[i].province].sum_total_patient = comma3(String(province_obj[CovidProvince3[i].province].sum_total_patient))
     province_obj[CovidProvince3[i].province].sum_death_patient = comma3(String(province_obj[CovidProvince3[i].province].sum_death_patient))
     province_obj[CovidProvince3[i].province].sum_total_inthai = comma3(String(province_obj[CovidProvince3[i].province].sum_total_inthai))
 
@@ -415,7 +415,7 @@ async function covid3_provice() {
               "text": "ภูเก็ต"
             }
           }
-         
+
 
         ]
       }
@@ -599,9 +599,9 @@ async function search_data(msg) {
 
       },
       {
-        "type": "text", 
+        "type": "text",
         "text": "โปรดเรียกใช้คำสั่งฉัน! เช่น :\n- ผู้ติดเชื้อรายวัน\n- ผู้ติดเชื้อรายวันแยกจังหวัด\n- ระลอก 3 แยกจังหวัด\n- กราฟผู้ติดเชื้อ 1 สัปดาห์\n\nหมายเหตุ**\n1. ผู้ติดเชื้อรายวันแยกจังหวัด คือ รายงานสถานการณ์ COVID-19 ประจำวัน แยกตามรายจังหวัด (ค้นหาตามชื่อจังหวัด)\n2. ระลอก 3 แยกจังหวัด คือ รายงานสถานการณ์ COVID-19 ระลอก 3 (ตั้งแต่ 01/04/2021 –ปัจจุบัน) แยกตามรายจังหวัด (ค้นหาตามชื่อจังหวัด)\n3. กราฟผู้ติดเชื้อ 1 สัปดาห์ คือ กราฟแสดง 1 สัปดาห์ล่าสุด",
-       
+
       }
     ];
 
@@ -613,9 +613,9 @@ async function search_data(msg) {
         "color": "#ff0000"
       },
       {
-        "type": "text", 
+        "type": "text",
         "text": "โปรดเรียกใช้คำสั่งฉัน! เช่น :\n- ผู้ติดเชื้อรายวัน\n- ผู้ติดเชื้อรายวันแยกจังหวัด\n- ระลอก 3 แยกจังหวัด\n- กราฟผู้ติดเชื้อ 1 สัปดาห์\n\nหมายเหตุ**\n1. ผู้ติดเชื้อรายวันแยกจังหวัด คือ รายงานสถานการณ์ COVID-19 ประจำวัน แยกตามรายจังหวัด (ค้นหาตามชื่อจังหวัด)\n2. ระลอก 3 แยกจังหวัด คือ รายงานสถานการณ์ COVID-19 ระลอก 3 (ตั้งแต่ 01/04/2021 –ปัจจุบัน) แยกตามรายจังหวัด (ค้นหาตามชื่อจังหวัด)\n3. กราฟผู้ติดเชื้อ 1 สัปดาห์ คือ กราฟแสดง 1 สัปดาห์ล่าสุด",
-      
+
       }
 
     ];
@@ -642,13 +642,13 @@ async function replydata_covid_day() {
   for (let i = 0; i < 77; i++) {
 
     objData_province[objectData[i].province] = {
-      province:   objectData[i].province,
+      province: objectData[i].province,
       date_1: objectData[i].txn_date,
-      new_case: objectData[i].new_case ,// ผู้ป่วยรายใหม่
-      new_case_excludeabroad:  objectData[i].new_case_excludeabroad, // ผู้ป่วยรายใหม่ไม่รวมต่างประเทศ
+      new_case: objectData[i].new_case,// ผู้ป่วยรายใหม่
+      new_case_excludeabroad: objectData[i].new_case_excludeabroad, // ผู้ป่วยรายใหม่ไม่รวมต่างประเทศ
       news_case_come_from_abroad: objectData[i].new_case - objectData[i].new_case_excludeabroad, // ผู้ป่วยรายใหม่ต่างประเทศ
       total_case: objectData[i].total_case,// ผู้ป่วยสะสม
-      new_death:  objectData[i].new_death,
+      new_death: objectData[i].new_death,
       total_death: objectData[i].total_death,
 
       update_date: objectData[i].update_date
@@ -956,9 +956,9 @@ async function number_Infected_peopleByprovince(msg) {
 
       },
       {
-        "type": "text", 
+        "type": "text",
         "text": "โปรดเรียกใช้คำสั่งฉัน! เช่น :\n- ผู้ติดเชื้อรายวัน\n- ผู้ติดเชื้อรายวันแยกจังหวัด\n- ระลอก 3 แยกจังหวัด\n- กราฟผู้ติดเชื้อ 1 สัปดาห์\n\nหมายเหตุ**\n1. ผู้ติดเชื้อรายวันแยกจังหวัด คือ รายงานสถานการณ์ COVID-19 ประจำวัน แยกตามรายจังหวัด (ค้นหาตามชื่อจังหวัด)\n2. ระลอก 3 แยกจังหวัด คือ รายงานสถานการณ์ COVID-19 ระลอก 3 (ตั้งแต่ 01/04/2021 –ปัจจุบัน) แยกตามรายจังหวัด (ค้นหาตามชื่อจังหวัด)\n3. กราฟผู้ติดเชื้อ 1 สัปดาห์ คือ กราฟแสดง 1 สัปดาห์ล่าสุด",
-      
+
       }
 
     ];
@@ -972,7 +972,7 @@ async function number_Infected_peopleByprovince(msg) {
       {
         "type": "text", // ①
         "text": "โปรดเรียกใช้คำสั่งฉัน! เช่น :\n- ผู้ติดเชื้อรายวัน\n- ผู้ติดเชื้อรายวันแยกจังหวัด\n- ระลอก 3 แยกจังหวัด\n- กราฟผู้ติดเชื้อ 1 สัปดาห์\n\nหมายเหตุ**\n1. ผู้ติดเชื้อรายวันแยกจังหวัด คือ รายงานสถานการณ์ COVID-19 ประจำวัน แยกตามรายจังหวัด (ค้นหาตามชื่อจังหวัด)\n2. ระลอก 3 แยกจังหวัด คือ รายงานสถานการณ์ COVID-19 ระลอก 3 (ตั้งแต่ 01/04/2021 –ปัจจุบัน) แยกตามรายจังหวัด (ค้นหาตามชื่อจังหวัด)\n3. กราฟผู้ติดเชื้อ 1 สัปดาห์ คือ กราฟแสดง 1 สัปดาห์ล่าสุด",
-      
+
       }
 
     ];
@@ -996,14 +996,14 @@ async function covid19_ripple3_now() {
   let rawData_covid = await response_data.text() //อ่านผลลัพธ์
   let objData_ripple3_now = JSON.parse(rawData_covid) //ทำข้อมูลเป็น object
 
-  
+
   let sum_newcase = 0;
-  let arr_height =[]
+  let arr_height = []
   let arr_date = []
-  let check_num = 0,max_height=0
+  let check_num = 0, max_height = 0
   for (let i = objData_ripple3_now.length - 7; i < objData_ripple3_now.length; i++) {
     sum_newcase += objData_ripple3_now[i].new_case
-    
+
     var objDate = new Date(objData_ripple3_now[i].txn_date);
 
     arr_date.push(objDate.toLocaleString("th", { day: "numeric" }) + ' ' + objDate.toLocaleString("th", { month: "short" }));
@@ -1018,541 +1018,541 @@ async function covid19_ripple3_now() {
   }
 
   let avg = parseInt(sum_newcase / 7)
-  
-  for (let i = objData_ripple3_now.length - 7; i < objData_ripple3_now.length; i++){
+
+  for (let i = objData_ripple3_now.length - 7; i < objData_ripple3_now.length; i++) {
     arr_height.push(String((objData_ripple3_now[i].new_case * 90) / max_height) + "%")
   }
 
-  
 
 
- 
+
+
   let mes = [
     {
       "type": "flex",
       "size": "giga",
       "altText": "Covid",
-      "contents":{
-     "type": "bubble",
+      "contents": {
+        "type": "bubble",
         "header": {
-    "type": "box",
-    "layout": "baseline",
-    "contents": [
-      {
-        "type": "icon",
-        "url": "https://cdn-icons-png.flaticon.com/512/323/323281.png",
-        "position": "relative",
-        "offsetStart": "20px",
-        "size": "lg",
-        "offsetTop": "4px"
-      },
-      {
-        "type": "text",
-        "text": "กราฟจำนวนผู้ติดเชื้อ 1 สัปดาห์",
-        "align": "center",
-        "adjustMode": "shrink-to-fit",
-        "size": "md",
-        "color": "#000000"
+          "type": "box",
+          "layout": "baseline",
+          "contents": [
+            {
+              "type": "icon",
+              "url": "https://cdn-icons-png.flaticon.com/512/323/323281.png",
+              "position": "relative",
+              "offsetStart": "20px",
+              "size": "lg",
+              "offsetTop": "4px"
+            },
+            {
+              "type": "text",
+              "text": "กราฟจำนวนผู้ติดเชื้อ 1 สัปดาห์",
+              "align": "center",
+              "adjustMode": "shrink-to-fit",
+              "size": "md",
+              "color": "#000000"
+            }
+          ]
+        },
+        "body": {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "box",
+                  "layout": "horizontal",
+                  "contents": [
+                    {
+                      "type": "box",
+                      "layout": "vertical",
+                      "spacing": "sm",
+                      "contents": [
+                        {
+                          "type": "box",
+                          "layout": "horizontal",
+                          "contents": [
+                            {
+                              "type": "text",
+                              "text": String((objData_ripple3_now[objData_ripple3_now.length - 7].new_case / 1000)).slice(0, 4) + "k",
+                              "size": "xxs",
+                              "color": "#000000",
+                              "align": "center",
+                              "wrap": true
+                            }
+                          ],
+                          "width": "100%",
+                          "height": "15px",
+                          "justifyContent": "center",
+                          "alignItems": "center"
+                        },
+                        {
+                          "type": "box",
+                          "layout": "horizontal",
+                          "contents": [],
+                          "width": "100%",
+                          "backgroundColor": "#DC143C",
+                          "flex": 1,
+                          "height": arr_height[0],
+                          "alignItems": "center",
+                          "justifyContent": "center"
+                        }
+                      ],
+                      "flex": 2,
+                      "height": "100%",
+                      "width": "30px",
+                      "justifyContent": "flex-end",
+                      "alignItems": "flex-end"
+                    },
+                    {
+                      "type": "box",
+                      "layout": "vertical",
+                      "spacing": "sm",
+                      "contents": [
+                        {
+                          "type": "box",
+                          "layout": "horizontal",
+                          "contents": [
+                            {
+                              "type": "text",
+                              "text": String((objData_ripple3_now[objData_ripple3_now.length - 6].new_case / 1000)).slice(0, 4) + "k",
+                              "size": "xxs",
+                              "color": "#000000",
+                              "align": "center"
+                            }
+                          ],
+                          "width": "100%",
+                          "height": "15px",
+                          "justifyContent": "center",
+                          "alignItems": "center"
+                        },
+                        {
+                          "type": "box",
+                          "layout": "horizontal",
+                          "contents": [],
+                          "width": "100%",
+                          "backgroundColor": "#DC143C",
+                          "flex": 1,
+                          "height": arr_height[1],
+                          "alignItems": "flex-end"
+                        }
+                      ],
+                      "flex": 2,
+                      "height": "100%",
+                      "width": "30px",
+                      "justifyContent": "flex-end",
+                      "alignItems": "flex-end"
+                    },
+                    {
+                      "type": "box",
+                      "layout": "vertical",
+                      "spacing": "sm",
+                      "contents": [
+                        {
+                          "type": "box",
+                          "layout": "horizontal",
+                          "contents": [
+                            {
+                              "type": "text",
+                              "text": String((objData_ripple3_now[objData_ripple3_now.length - 5].new_case / 1000)).slice(0, 4) + "k",
+                              "size": "xxs",
+                              "color": "#000000",
+                              "align": "center"
+                            }
+                          ],
+                          "width": "100%",
+                          "height": "15px",
+                          "justifyContent": "center",
+                          "alignItems": "center"
+                        },
+                        {
+                          "type": "box",
+                          "layout": "horizontal",
+                          "contents": [],
+                          "width": "100%",
+                          "backgroundColor": "#DC143C",
+                          "flex": 1,
+                          "height": arr_height[2],
+                          "alignItems": "flex-end"
+                        }
+                      ],
+                      "flex": 2,
+                      "height": "100%",
+                      "width": "30px",
+                      "justifyContent": "flex-end",
+                      "alignItems": "flex-end"
+                    },
+                    {
+                      "type": "box",
+                      "layout": "vertical",
+                      "spacing": "sm",
+                      "contents": [
+                        {
+                          "type": "box",
+                          "layout": "horizontal",
+                          "contents": [
+                            {
+                              "type": "text",
+                              "text": String((objData_ripple3_now[objData_ripple3_now.length - 4].new_case / 1000)).slice(0, 4) + "k",
+                              "size": "xxs",
+                              "color": "#000000",
+                              "align": "center"
+                            }
+                          ],
+                          "width": "100%",
+                          "height": "15px",
+                          "justifyContent": "center",
+                          "alignItems": "center"
+                        },
+                        {
+                          "type": "box",
+                          "layout": "horizontal",
+                          "contents": [],
+                          "width": "100%",
+                          "backgroundColor": "#DC143C",
+                          "flex": 1,
+                          "height": arr_height[3],
+                          "alignItems": "flex-end"
+                        }
+                      ],
+                      "flex": 2,
+                      "height": "100%",
+                      "width": "30px",
+                      "justifyContent": "flex-end",
+                      "alignItems": "flex-end"
+                    },
+                    {
+                      "type": "box",
+                      "layout": "vertical",
+                      "spacing": "sm",
+                      "contents": [
+                        {
+                          "type": "box",
+                          "layout": "horizontal",
+                          "contents": [
+                            {
+                              "type": "text",
+                              "text": String((objData_ripple3_now[objData_ripple3_now.length - 3].new_case / 1000)).slice(0, 4) + "k",
+                              "size": "xxs",
+                              "color": "#000000",
+                              "align": "center"
+                            }
+                          ],
+                          "width": "100%",
+                          "height": "15px",
+                          "justifyContent": "center",
+                          "alignItems": "center"
+                        },
+                        {
+                          "type": "box",
+                          "layout": "horizontal",
+                          "contents": [],
+                          "width": "100%",
+                          "backgroundColor": "#DC143C",
+                          "flex": 1,
+                          "height": arr_height[4],
+                          "alignItems": "flex-end"
+                        }
+                      ],
+                      "flex": 2,
+                      "height": "100%",
+                      "width": "30px",
+                      "justifyContent": "flex-end",
+                      "alignItems": "flex-end"
+                    },
+                    {
+                      "type": "box",
+                      "layout": "vertical",
+                      "spacing": "sm",
+                      "contents": [
+                        {
+                          "type": "box",
+                          "layout": "horizontal",
+                          "contents": [
+                            {
+                              "type": "text",
+                              "text": String((objData_ripple3_now[objData_ripple3_now.length - 2].new_case / 1000)).slice(0, 4) + "k",
+                              "size": "xxs",
+                              "color": "#000000",
+                              "align": "center"
+                            }
+                          ],
+                          "width": "100%",
+                          "height": "15px",
+                          "justifyContent": "center",
+                          "alignItems": "center"
+                        },
+                        {
+                          "type": "box",
+                          "layout": "horizontal",
+                          "contents": [],
+                          "width": "100%",
+                          "backgroundColor": "#DC143C",
+                          "flex": 1,
+                          "height": arr_height[5],
+                          "alignItems": "flex-end"
+                        }
+                      ],
+                      "flex": 2,
+                      "height": "100%",
+                      "width": "30px",
+                      "justifyContent": "flex-end",
+                      "alignItems": "flex-end"
+                    },
+                    {
+                      "type": "box",
+                      "layout": "vertical",
+                      "spacing": "sm",
+                      "contents": [
+                        {
+                          "type": "box",
+                          "layout": "horizontal",
+                          "contents": [
+                            {
+                              "type": "text",
+                              "text": String((objData_ripple3_now[objData_ripple3_now.length - 1].new_case / 1000)).slice(0, 4) + "k",
+                              "size": "xxs",
+                              "color": "#000000",
+                              "align": "center"
+                            }
+                          ],
+                          "width": "100%",
+                          "height": "15px",
+                          "justifyContent": "center",
+                          "alignItems": "center"
+                        },
+                        {
+                          "type": "box",
+                          "layout": "horizontal",
+                          "contents": [],
+                          "width": "100%",
+                          "backgroundColor": "#DC143C",
+                          "flex": 1,
+                          "height": arr_height[6],
+                          "alignItems": "flex-end"
+                        }
+                      ],
+                      "flex": 2,
+                      "height": "100%",
+                      "width": "30px",
+                      "justifyContent": "flex-end",
+                      "alignItems": "flex-end"
+                    }
+                  ],
+                  "height": "200px",
+                  "width": "100%",
+                  "justifyContent": "space-evenly",
+                  "alignItems": "flex-end"
+                }
+              ],
+              "justifyContent": "flex-start",
+              "width": "270px",
+              "alignItems": "flex-end",
+              "margin": "xl"
+            },
+            {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "separator",
+                  "color": "#000000"
+                },
+                {
+                  "type": "box",
+                  "layout": "horizontal",
+                  "contents": [
+                    {
+                      "type": "box",
+                      "layout": "horizontal",
+                      "contents": [
+                        {
+                          "type": "text",
+                          "text": arr_date[0],
+                          "align": "center",
+                          "size": "xxs",
+                          "wrap": true
+                        }
+                      ],
+                      "backgroundColor": "#ffffff",
+                      "height": "40px",
+                      "width": "30px",
+                      "justifyContent": "center",
+                      "alignItems": "center"
+                    },
+                    {
+                      "type": "box",
+                      "layout": "horizontal",
+                      "contents": [
+                        {
+                          "type": "text",
+                          "text": arr_date[1],
+                          "align": "center",
+                          "size": "xxs",
+                          "wrap": true
+                        }
+                      ],
+                      "backgroundColor": "#ffffff",
+                      "height": "40px",
+                      "width": "30px",
+                      "justifyContent": "center",
+                      "alignItems": "center"
+                    },
+                    {
+                      "type": "box",
+                      "layout": "horizontal",
+                      "contents": [
+                        {
+                          "type": "text",
+                          "text": arr_date[2],
+                          "align": "center",
+                          "size": "xxs",
+                          "wrap": true
+                        }
+                      ],
+                      "backgroundColor": "#ffffff",
+                      "height": "40px",
+                      "width": "30px",
+                      "justifyContent": "center",
+                      "alignItems": "center"
+                    },
+                    {
+                      "type": "box",
+                      "layout": "horizontal",
+                      "contents": [
+                        {
+                          "type": "text",
+                          "text": arr_date[3],
+                          "align": "center",
+                          "size": "xxs",
+                          "wrap": true
+                        }
+                      ],
+                      "backgroundColor": "#ffffff",
+                      "height": "40px",
+                      "width": "30px",
+                      "justifyContent": "center",
+                      "alignItems": "center"
+                    },
+                    {
+                      "type": "box",
+                      "layout": "horizontal",
+                      "contents": [
+                        {
+                          "type": "text",
+                          "text": arr_date[4],
+                          "align": "center",
+                          "size": "xxs",
+                          "wrap": true
+                        }
+                      ],
+                      "backgroundColor": "#ffffff",
+                      "height": "40px",
+                      "width": "30px",
+                      "justifyContent": "center",
+                      "alignItems": "center"
+                    },
+                    {
+                      "type": "box",
+                      "layout": "horizontal",
+                      "contents": [
+                        {
+                          "type": "text",
+                          "text": arr_date[5],
+                          "align": "center",
+                          "size": "xxs",
+                          "wrap": true
+                        }
+                      ],
+                      "backgroundColor": "#ffffff",
+                      "height": "40px",
+                      "width": "30px",
+                      "justifyContent": "center",
+                      "alignItems": "center"
+                    },
+                    {
+                      "type": "box",
+                      "layout": "horizontal",
+                      "contents": [
+                        {
+                          "type": "text",
+                          "text": arr_date[6],
+                          "align": "center",
+                          "size": "xxs",
+                          "wrap": true
+                        }
+                      ],
+                      "backgroundColor": "#ffffff",
+                      "height": "40px",
+                      "width": "30px",
+                      "justifyContent": "center",
+                      "alignItems": "center"
+                    }
+                  ],
+                  "justifyContent": "space-evenly",
+                  "alignItems": "center",
+                  "width": "100%"
+                }
+              ],
+              "width": "270px"
+            }
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "width": "300px",
+          "height": "260px",
+          "position": "relative"
+        },
+        "footer": {
+          "type": "box",
+          "layout": "horizontal",
+          "contents": [
+            {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [],
+              "width": "20px",
+              "height": "10px",
+              "backgroundColor": "#DC143C",
+              "offsetStart": "15px",
+              "flex": 1,
+              "offsetBottom": "5px"
+            },
+            {
+              "type": "text",
+              "text": "จำนวนผู้ติดเชื้อ ",
+              "offsetStart": "22px",
+              "size": "xs",
+              "offsetBottom": "4px",
+              "wrap": true,
+              "flex": 2
+            },
+            {
+              "type": "text",
+              "text": "เฉลี่ย : " + avg.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " คน/สัปดาห์",
+              "flex": 3,
+              "size": "xs",
+              "offsetBottom": "4px",
+              "offsetStart": "18px",
+              "wrap": true
+            }
+          ],
+          "width": "100%",
+          "height": "70px",
+          "justifyContent": "center",
+          "alignItems": "center"
+        }
       }
-    ]
-  },
-  "body": {
-    "type": "box",
-    "layout": "vertical",
-    "contents": [
-      {
-        "type": "box",
-        "layout": "vertical",
-        "contents": [
-          {
-            "type": "box",
-            "layout": "horizontal",
-            "contents": [
-              {
-                "type": "box",
-                "layout": "vertical",
-                "spacing": "sm",
-                "contents": [
-                  {
-                    "type": "box",
-                    "layout": "horizontal",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": String((objData_ripple3_now[objData_ripple3_now.length - 7].new_case / 1000)).slice(0, 4) + "k",
-                        "size": "xxs",
-                        "color": "#000000",
-                        "align": "center",
-                        "wrap": true
-                      }
-                    ],
-                    "width": "100%",
-                    "height": "15px",
-                    "justifyContent": "center",
-                    "alignItems": "center"
-                  },
-                  {
-                    "type": "box",
-                    "layout": "horizontal",
-                    "contents": [],
-                    "width": "100%",
-                    "backgroundColor": "#DC143C",
-                    "flex": 1,
-                    "height": arr_height[0],
-                    "alignItems": "center",
-                    "justifyContent": "center"
-                  }
-                ],
-                "flex": 2,
-                "height": "100%",
-                "width": "30px",
-                "justifyContent": "flex-end",
-                "alignItems": "flex-end"
-              },
-              {
-                "type": "box",
-                "layout": "vertical",
-                "spacing": "sm",
-                "contents": [
-                  {
-                    "type": "box",
-                    "layout": "horizontal",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": String((objData_ripple3_now[objData_ripple3_now.length - 6].new_case / 1000)).slice(0, 4) + "k",
-                        "size": "xxs",
-                        "color": "#000000",
-                        "align": "center"
-                      }
-                    ],
-                    "width": "100%",
-                    "height": "15px",
-                    "justifyContent": "center",
-                    "alignItems": "center"
-                  },
-                  {
-                    "type": "box",
-                    "layout": "horizontal",
-                    "contents": [],
-                    "width": "100%",
-                    "backgroundColor": "#DC143C",
-                    "flex": 1,
-                    "height": arr_height[1] ,
-                    "alignItems": "flex-end"
-                  }
-                ],
-                "flex": 2,
-                "height": "100%",
-                "width": "30px",
-                "justifyContent": "flex-end",
-                "alignItems": "flex-end"
-              },
-              {
-                "type": "box",
-                "layout": "vertical",
-                "spacing": "sm",
-                "contents": [
-                  {
-                    "type": "box",
-                    "layout": "horizontal",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": String((objData_ripple3_now[objData_ripple3_now.length - 5].new_case / 1000)).slice(0, 4) + "k",
-                        "size": "xxs",
-                        "color": "#000000",
-                        "align": "center"
-                      }
-                    ],
-                    "width": "100%",
-                    "height": "15px",
-                    "justifyContent": "center",
-                    "alignItems": "center"
-                  },
-                  {
-                    "type": "box",
-                    "layout": "horizontal",
-                    "contents": [],
-                    "width": "100%",
-                    "backgroundColor": "#DC143C",
-                    "flex": 1,
-                    "height": arr_height[2],
-                    "alignItems": "flex-end"
-                  }
-                ],
-                "flex": 2,
-                "height": "100%",
-                "width": "30px",
-                "justifyContent": "flex-end",
-                "alignItems": "flex-end"
-              },
-              {
-                "type": "box",
-                "layout": "vertical",
-                "spacing": "sm",
-                "contents": [
-                  {
-                    "type": "box",
-                    "layout": "horizontal",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": String((objData_ripple3_now[objData_ripple3_now.length - 4].new_case / 1000)).slice(0, 4) + "k",
-                        "size": "xxs",
-                        "color": "#000000",
-                        "align": "center"
-                      }
-                    ],
-                    "width": "100%",
-                    "height": "15px",
-                    "justifyContent": "center",
-                    "alignItems": "center"
-                  },
-                  {
-                    "type": "box",
-                    "layout": "horizontal",
-                    "contents": [],
-                    "width": "100%",
-                    "backgroundColor": "#DC143C",
-                    "flex": 1,
-                    "height": arr_height[3],
-                    "alignItems": "flex-end"
-                  }
-                ],
-                "flex": 2,
-                "height": "100%",
-                "width": "30px",
-                "justifyContent": "flex-end",
-                "alignItems": "flex-end"
-              },
-              {
-                "type": "box",
-                "layout": "vertical",
-                "spacing": "sm",
-                "contents": [
-                  {
-                    "type": "box",
-                    "layout": "horizontal",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": String((objData_ripple3_now[objData_ripple3_now.length - 3].new_case / 1000)).slice(0, 4) + "k",
-                        "size": "xxs",
-                        "color": "#000000",
-                        "align": "center"
-                      }
-                    ],
-                    "width": "100%",
-                    "height": "15px",
-                    "justifyContent": "center",
-                    "alignItems": "center"
-                  },
-                  {
-                    "type": "box",
-                    "layout": "horizontal",
-                    "contents": [],
-                    "width": "100%",
-                    "backgroundColor": "#DC143C",
-                    "flex": 1,
-                    "height": arr_height[4],
-                    "alignItems": "flex-end"
-                  }
-                ],
-                "flex": 2,
-                "height": "100%",
-                "width": "30px",
-                "justifyContent": "flex-end",
-                "alignItems": "flex-end"
-              },
-              {
-                "type": "box",
-                "layout": "vertical",
-                "spacing": "sm",
-                "contents": [
-                  {
-                    "type": "box",
-                    "layout": "horizontal",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": String((objData_ripple3_now[objData_ripple3_now.length - 2].new_case / 1000)).slice(0, 4) + "k",
-                        "size": "xxs",
-                        "color": "#000000",
-                        "align": "center"
-                      }
-                    ],
-                    "width": "100%",
-                    "height": "15px",
-                    "justifyContent": "center",
-                    "alignItems": "center"
-                  },
-                  {
-                    "type": "box",
-                    "layout": "horizontal",
-                    "contents": [],
-                    "width": "100%",
-                    "backgroundColor": "#DC143C",
-                    "flex": 1,
-                    "height": arr_height[5],
-                    "alignItems": "flex-end"
-                  }
-                ],
-                "flex": 2,
-                "height": "100%",
-                "width": "30px",
-                "justifyContent": "flex-end",
-                "alignItems": "flex-end"
-              },
-              {
-                "type": "box",
-                "layout": "vertical",
-                "spacing": "sm",
-                "contents": [
-                  {
-                    "type": "box",
-                    "layout": "horizontal",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": String((objData_ripple3_now[objData_ripple3_now.length - 1].new_case / 1000)).slice(0, 4) + "k",
-                        "size": "xxs",
-                        "color": "#000000",
-                        "align": "center"
-                      }
-                    ],
-                    "width": "100%",
-                    "height": "15px",
-                    "justifyContent": "center",
-                    "alignItems": "center"
-                  },
-                  {
-                    "type": "box",
-                    "layout": "horizontal",
-                    "contents": [],
-                    "width": "100%",
-                    "backgroundColor": "#DC143C",
-                    "flex": 1,
-                    "height": arr_height[6],
-                    "alignItems": "flex-end"
-                  }
-                ],
-                "flex": 2,
-                "height": "100%",
-                "width": "30px",
-                "justifyContent": "flex-end",
-                "alignItems": "flex-end"
-              }
-            ],
-            "height": "200px",
-            "width": "100%",
-            "justifyContent": "space-evenly",
-            "alignItems": "flex-end"
-          }
-        ],
-        "justifyContent": "flex-start",
-        "width": "270px",
-        "alignItems": "flex-end",
-        "margin": "xl"
-      },
-      {
-        "type": "box",
-        "layout": "vertical",
-        "contents": [
-          {
-            "type": "separator",
-            "color": "#000000"
-          },
-          {
-            "type": "box",
-            "layout": "horizontal",
-            "contents": [
-              {
-                "type": "box",
-                "layout": "horizontal",
-                "contents": [
-                  {
-                    "type": "text",
-                    "text": arr_date[0],
-                    "align": "center",
-                    "size": "xxs",
-                    "wrap": true
-                  }
-                ],
-                "backgroundColor": "#ffffff",
-                "height": "40px",
-                "width": "30px",
-                "justifyContent": "center",
-                "alignItems": "center"
-              },
-              {
-                "type": "box",
-                "layout": "horizontal",
-                "contents": [
-                  {
-                    "type": "text",
-                    "text": arr_date[1],
-                    "align": "center",
-                    "size": "xxs",
-                    "wrap": true
-                  }
-                ],
-                "backgroundColor": "#ffffff",
-                "height": "40px",
-                "width": "30px",
-                "justifyContent": "center",
-                "alignItems": "center"
-              },
-              {
-                "type": "box",
-                "layout": "horizontal",
-                "contents": [
-                  {
-                    "type": "text",
-                    "text": arr_date[2],
-                    "align": "center",
-                    "size": "xxs",
-                    "wrap": true
-                  }
-                ],
-                "backgroundColor": "#ffffff",
-                "height": "40px",
-                "width": "30px",
-                "justifyContent": "center",
-                "alignItems": "center"
-              },
-              {
-                "type": "box",
-                "layout": "horizontal",
-                "contents": [
-                  {
-                    "type": "text",
-                    "text": arr_date[3],
-                    "align": "center",
-                    "size": "xxs",
-                    "wrap": true
-                  }
-                ],
-                "backgroundColor": "#ffffff",
-                "height": "40px",
-                "width": "30px",
-                "justifyContent": "center",
-                "alignItems": "center"
-              },
-              {
-                "type": "box",
-                "layout": "horizontal",
-                "contents": [
-                  {
-                    "type": "text",
-                    "text": arr_date[4],
-                    "align": "center",
-                    "size": "xxs",
-                    "wrap": true
-                  }
-                ],
-                "backgroundColor": "#ffffff",
-                "height": "40px",
-                "width": "30px",
-                "justifyContent": "center",
-                "alignItems": "center"
-              },
-              {
-                "type": "box",
-                "layout": "horizontal",
-                "contents": [
-                  {
-                    "type": "text",
-                    "text": arr_date[5],
-                    "align": "center",
-                    "size": "xxs",
-                    "wrap": true
-                  }
-                ],
-                "backgroundColor": "#ffffff",
-                "height": "40px",
-                "width": "30px",
-                "justifyContent": "center",
-                "alignItems": "center"
-              },
-              {
-                "type": "box",
-                "layout": "horizontal",
-                "contents": [
-                  {
-                    "type": "text",
-                    "text": arr_date[6],
-                    "align": "center",
-                    "size": "xxs",
-                    "wrap": true
-                  }
-                ],
-                "backgroundColor": "#ffffff",
-                "height": "40px",
-                "width": "30px",
-                "justifyContent": "center",
-                "alignItems": "center"
-              }
-            ],
-            "justifyContent": "space-evenly",
-            "alignItems": "center",
-            "width": "100%"
-          }
-        ],
-        "width": "270px"
-      }
-    ],
-    "justifyContent": "center",
-    "alignItems": "center",
-    "width": "300px",
-    "height": "260px",
-    "position": "relative"
-  },
-  "footer": {
-    "type": "box",
-    "layout": "horizontal",
-    "contents": [
-      {
-        "type": "box",
-        "layout": "vertical",
-        "contents": [],
-        "width": "20px",
-        "height": "10px",
-        "backgroundColor": "#DC143C",
-        "offsetStart": "15px",
-        "flex": 1,
-        "offsetBottom": "5px"
-      },
-      {
-        "type": "text",
-        "text": "จำนวนผู้ติดเชื้อ ",
-        "offsetStart": "22px",
-        "size": "xs",
-        "offsetBottom": "4px",
-        "wrap": true,
-        "flex": 2
-      },
-      {
-        "type": "text",
-        "text": "เฉลี่ย : " + avg.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +" คน/สัปดาห์",
-        "flex": 3,
-        "size": "xs",
-        "offsetBottom": "4px",
-        "offsetStart": "18px",
-        "wrap": true
-      }
-    ],
-    "width": "100%",
-    "height": "70px",
-    "justifyContent": "center",
-    "alignItems": "center"
-  }
-}
     },
     {
       "type": "text", // ①
       "text": "โปรดเรียกใช้คำสั่งฉัน! เช่น :\n- ผู้ติดเชื้อรายวัน\n- ผู้ติดเชื้อรายวันแยกจังหวัด\n- ระลอก 3 แยกจังหวัด\n- กราฟผู้ติดเชื้อ 1 สัปดาห์\n\nหมายเหตุ**\n1. ผู้ติดเชื้อรายวันแยกจังหวัด คือ รายงานสถานการณ์ COVID-19 ประจำวัน แยกตามรายจังหวัด (ค้นหาตามชื่อจังหวัด)\n2. ระลอก 3 แยกจังหวัด คือ รายงานสถานการณ์ COVID-19 ระลอก 3 (ตั้งแต่ 01/04/2021 –ปัจจุบัน) แยกตามรายจังหวัด (ค้นหาตามชื่อจังหวัด)\n3. กราฟผู้ติดเชื้อ 1 สัปดาห์ คือ กราฟแสดง 1 สัปดาห์ล่าสุด",
-     
+
     }
   ]
   // console.log(obj_replaytoken_day);
@@ -1616,10 +1616,10 @@ async function Post_data2(obj_replaytoken, messages) {
 
 function comma(data_covid) {
 
-  let count_all =  data_covid.length, c = "", b = "";
+  let count_all = data_covid.length, c = "", b = "";
 
   if (data_covid.length > 3) {
-   for (let i = 0; i < data_covid.length; i++) {
+    for (let i = 0; i < data_covid.length; i++) {
       count_all--;
       c += data_covid.charAt(count_all);
       if ((i + 1) % 3 == 0 && i != data_covid.length - 1) {
@@ -1686,7 +1686,7 @@ function comma3(data_covid) {
   return data_covid;
 }
 
-app.listen(app.get('port'), function () {
-  console.log('Server started: http://localhost:' + app.get('port') + '/')
+app.listen(PORT, function () {
+  console.log('Server started: http://localhost:' + PORT + '/')
 
 })
