@@ -871,7 +871,7 @@ async function number_Infected_peopleByprovince(msg) {
                       },
                       {
                         "type": "text",
-                        "text": "+" + objData_province[search].total_case + " ราย",
+                        "text": objData_province[search].total_case + " ราย",
                         "size": "sm",
                         "color": "#ff4d4d",
                         "align": "end",
