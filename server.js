@@ -1593,7 +1593,7 @@ async function Post_data2(obj_replaytoken, messages) {
 
   let headers = {
     'Content-Type': 'application/json',
-    'Authorization': 'Bearer vmJxnNgBzOyBzB8mfR19RngdMg9buUj9biUMwVs+J6G9AKe1NdRscybj7VB81W+wesoslqUH33YIif1fpxF4yUz6MxZkuKCMQEBeWYj6eoA9oajYK9DBTG/5gngMm9+MRCEUm3wdxR2SL5HggUOt9QdB04t89/1O/w1cDnyilFU='
+    'Authorization': 'Bearer '
   }
 
   body = JSON.stringify({
